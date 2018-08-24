@@ -35,7 +35,8 @@ func exists(path string) (bool, error) {
 // 	}
 // }
 
-func userHandler(w http.ResponseWriter, r *http.Request) {
+//User handler for /user renders the user.html
+func User(w http.ResponseWriter, r *http.Request) {
 	title := r.URL.Path[len("/user/"):]
 	username := r.FormValue("username")
 	psw := r.FormValue("psw")
@@ -51,7 +52,7 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	switch title {
 	case "signup":
-		if !exs {
+		if !exs && p.UserName != "" {
 
 			var b []byte
 			b, err = json.Marshal(p)
@@ -63,12 +64,12 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 			}
 
 		} else {
-			http.Redirect(w, r, "/user/login", http.StatusFound)
+			http.Redirect(w, r, "/user/", http.StatusFound)
 		}
 
 	case "login":
 		if !exs {
-			http.Redirect(w, r, "/user/signup", http.StatusFound)
+			http.Redirect(w, r, "/user/", http.StatusFound)
 
 		} else {
 			var replys Person
@@ -89,19 +90,5 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	renderTemplateUser(w, "user", page)
-}
-
-func renderTemplateUser(w http.ResponseWriter, tmpl string, p *Page) {
-	err := templates.ExecuteTemplate(w, tmpl+".html", p)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
-func makeHandlerUser(fn func(http.ResponseWriter, *http.Request)) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-
-		fn(w, r)
-	}
+	render(w, "user.html", page)
 }
