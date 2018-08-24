@@ -1,0 +1,26 @@
+<h1>{{.Title}}</h1>
+
+<h2>Login Page</h2>
+<form action="/user/login" method="POST">
+    User name:
+    <br>
+    <input type="text" name="username">
+    <br> User password:
+    <br>
+    <input type="password" name="psw">
+    <input type="submit">
+</form>
+
+<h2>Signup Page</h2>
+<form action="/user/signup" method="POST">
+    User name:
+    <br>
+    <input type="text" name="username">
+    <br> User password:
+    <br>
+    <input type="password" name="psw">
+    <input type="submit">
+</form>
+
+<h2>View Page</h2>
+<div>{{printf "%s" .Body}}</div>
