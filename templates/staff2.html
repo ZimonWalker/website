@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+  <title>Staff Page</title>
+  <meta name="description" content="website description" />
+  <meta name="keywords" content="website keywords, website keywords" />
+  <link rel="stylesheet" href="../static/css/staff.css">
+</head>
+    
+    <body>
+        <div id="main">
+    <div id="header">
+      <div id="logo">
+        <div id="logo_text">
+          <!-- class="logo_colour", allows you to change the colour of the text -->
+          <h1><a href="/"><span class="logo_colour">HRMIS</span></a></h1>
+          <h2>Pusat Perkembangan Minda Darul Ridzuan</h2>
+        </div>
+      </div>
+      <div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="/staff">Profile</a></li>
+          <li class="selected"><a href="/staff2">Leave Application</a></li>
+          <li><a href="/staff3">Leave Status</a></li>
+          <li><a href="">Log Out</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="content_header"></div>
+    <div id="site_content">
+      <div id="sidebar_container">
+        
+        <div class="sidebar">
+          <div class="sidebar_top"></div>
+          <div class="sidebar_item">
+            <h3>HRMIS News</h3>
+            <ul>
+              <li><a href="#">link 1</a></li>
+              <li><a href="#">link 2</a></li>
+              <li><a href="#">link 3</a></li>
+              <li><a href="#">link 4</a></li>
+            </ul>
+          </div>
+          <div class="sidebar_base"></div>
+        </div>
+       
+      </div>
+      <div id="content">
+        <strong>Welcome, username</strong><br/><br/>
+        
+                      
+
+<strong>Your leave balance (days) : leave_balance </strong> <br /><br />
+
+<form method="post">
+<table width="500" border="2">
+<tr>
+<td>Apply Date</td>
+<td>:</td>
+<input id="apply" type="hidden" value="set_date" >
+<td>apply_date</td>
+</tr>
+<tr>
+<td>Start Date</td>
+<td>:</td>
+<td><input id="start" type="date" name="start_date" onchange="validation(this.value)" min="set_date" required /></td>
+</tr>
+<tr>
+<td>End Date</td>
+<td>:</td>
+<td><input type="date" name="end_date" onchange="myFunction(this.value)" min="set_date" required /></td>
+</tr>
+<tr>
+<td>No of day</td>
+<td>:</td>
+<td><input id="days" type="text" name="bil" disabled="disabled" value=""  /></td>
+</tr>
+<tr>
+<td>Leave Type</td>
+<td>:</td>
+<td><select name="leave_type"><option>Replacement Leave</option><option>Emergency Leave</option><option>Annual Leave</option><option>Time Out</option></select></td>
+</tr>
+<tr>
+<td>Remark</td>
+<td>:</td>
+<td><input type="text" name="remark" required /></td>
+</tr>
+</table>
+<input type="hidden" name="leave_balance" value="leave_balance" />
+<input type="hidden" name="username" value="username" />
+<input type="hidden" id="bil" name="days" />
+</fieldset>
+<button type="submit" name="submit" class="btn btn-primary">SUBMIT</button><br/><br/><br/><br/><br/>
+</form>
+
+</body>
+</html>
+<script>
+function myFunction(val) {
+	var oneDay = 24*60*60*1000;
+    var x = document.getElementById("start").value;
+	var p =new Date(val);
+	var z = new Date(x);
+	var y = Math.round(Math.abs((p.getTime() - z.getTime())/(oneDay)));
+	var t = y + 1 ;
+	document.getElementById("days").value = t;
+	document.getElementById("bil").value = t;
+}
+</script>
+<script>
+function validation(val) {
+	var aDate = document.getElementById("apply").value;
+	var cutiDate =new Date(val);
+	var z = new Date(aDate);
+	var timeDiff = Math.abs(z.getTime() - cutiDate.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+	if(diffDays < 3){ 
+        alert('Apply date must be 3 days before start date !!!');
+        window.location.href='leave_application.php?success';
+	}
+}
+</script>
+ </div>
+    </div>
+    <div id="content_footer"></div>
+    <div id="footer">
+      <p>Copyright &copy; zhoriifrosman</div>
+  </div>
+</body>
+</html>

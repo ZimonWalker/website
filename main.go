@@ -16,12 +16,25 @@ type Page struct {
 	Body  []byte
 }
 
+var templates = template.Must(template.ParseFiles(
+	"templates/home.html",
+	"templates/user.html",
+	"templates/staff.html",
+	"templates/staff2.html",
+	"templates/staff3.html",
+	"templates/hr.html",
+))
+
 func main() {
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/user/", User)
+	http.HandleFunc("/staff/", Staff)
+	http.HandleFunc("/staff2/", Staff2)
+	http.HandleFunc("/staff3/", Staff3)
+	http.HandleFunc("/hr/", Hr)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
@@ -45,16 +58,4 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	render(w, "home.html", p)
-}
-
-var templates = template.Must(template.ParseFiles("templates/home.html", "templates/user.html"))
-
-func makeHandlerUser(fn func(http.ResponseWriter, *http.Request)) http.HandlerFunc {
-
-	return func(w http.ResponseWriter, r *http.Request) {
-
-		fn(w, r)
-
-	}
-
 }
