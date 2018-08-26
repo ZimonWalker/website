@@ -1,0 +1,18 @@
+{
+    "ame": {
+        "password": "ame123",
+        "role": "hr"
+    },
+    "xnova": {
+        "password": "xn123",
+        "role": "hr"
+    },
+    "jerax": {
+        "password": "j123",
+        "role": "staff"
+    },
+    "topson": {
+        "password": "t123",
+        "role": "staff"
+    }
+}

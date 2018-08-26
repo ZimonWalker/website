@@ -48,44 +48,38 @@
 
             </div>
             <div id="content">
-                <strong>Welcome, username
+                <strong>Welcome, {{.Username}}
                 </strong><br/><br/>
                 <p><strong>Your profile</strong></p>
                 <table width=500 border="4">
                     <tr>
                         <td>Name :</td>
                         <td>
-                            full name
+                                {{.FullName}}
                         </td>
                     </tr>
                     <tr>
                         <td>IC :</td>
                         <td>
-                            ic
+                                {{.IC}}
                         </td>
                     </tr>
                     <tr>
                         <td>Gender :</td>
                         <td>
-                            gender
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Address :</td>
-                        <td>
-                            address
+                                {{.Gender}}
                         </td>
                     </tr>
                     <tr>
                         <td>Email :</td>
                         <td>
-                            email
+                                {{.Email}}
                         </td>
                     </tr>
                     <tr>
                         <td>Phone :</td>
                         <td>
-                            phone
+                                {{.Phone}}
                         </td>
                     </tr>
                 </table>

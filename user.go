@@ -44,7 +44,7 @@ func User(w http.ResponseWriter, r *http.Request) {
 		UserName: username,
 		Password: psw,
 	}
-	page := &Page{Title: p.UserName, Body: []byte("not Logged in")}
+	page := &Page{Title: p.UserName, Body: "not Logged in"}
 	db := "./database/person/" + p.UserName + ".json"
 	exs, err := exists(db)
 	if err != nil {
@@ -82,7 +82,7 @@ func User(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if p.UserName == replys.UserName && p.Password == replys.Password {
-				page = &Page{Title: p.UserName, Body: []byte("is NOW Logged in")}
+				page = &Page{Title: p.UserName, Body: "is NOW Logged in"}
 			} else {
 				log.Printf("Not equal")
 			}

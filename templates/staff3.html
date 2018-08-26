@@ -1,56 +1,81 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
-  <title>Staff Page</title>
-  <meta name="description" content="website description" />
+    <title>Staff Page</title>
+    <meta name="description" content="website description" />
     <meta name="keywords" content="website keywords, website keywords" />
     <link rel="stylesheet" href="../static/css/staff.css">
 </head>
 
-<body><div id="main">
-    <div id="header">
-      <div id="logo">
-        <div id="logo_text">
-          <!-- class="logo_colour", allows you to change the colour of the text -->
-          <h1><a href="/"><span class="logo_colour">HRMIS</span></a></h1>
-          <h2>Pusat Perkembangan Minda Darul Ridzuan</h2>
+<body>
+    <div id="main">
+        <div id="header">
+            <div id="logo">
+                <div id="logo_text">
+                    <!-- class="logo_colour", allows you to change the colour of the text -->
+                    <h1><a href="/"><span class="logo_colour">HRMIS</span></a></h1>
+                    <h2>Pusat Perkembangan Minda Darul Ridzuan</h2>
+                </div>
+            </div>
+            <div id="menubar">
+                <ul id="menu">
+                    <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+                    <li><a href="/staff">Profile</a></li>
+                    <li><a href="/staff2">Leave Application</a></li>
+                    <li class="selected"><a href="/staff3">Leave Status</a></li>
+                    <li><a href="">Log Out</a></li>
+                </ul>
+            </div>
         </div>
-      </div>
-      <div id="menubar">
-        <ul id="menu">
-          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
-          <li><a href="/staff">Profile</a></li>
-          <li><a href="/staff2">Leave Application</a></li>
-          <li class="selected"><a href="/staff3">Leave Status</a></li>
-          <li><a href="">Log Out</a></li>
-        </ul>
-      </div>
+        <div id="content_header"></div>
+        <div id="site_content">
+
+            <div id="content">
+                <strong>Welcome, {{.ByName}}</strong><br/><br/>
+
+                <p><strong>Your Leave Record</strong></p>
+
+                <strong>Your leave balance (days) : {{.LeaveBalance}} <strong><br /><br />
+
+                        <table width='900' border='1'>
+                            <tr>
+                                <th>No</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>No of Days</th>
+                                <th>Remark</th>
+                                <th>HR Status</th>
+                            </tr>
+
+                            <tr>
+                                <th>1</th>
+                                <th>{{.StartDate}}</th>
+                                <th>{{.EndDate}}</th>
+                                <th>{{.NumDays}}</th>
+                                <th>{{.Remark}}</th>
+                                <th>{{.Status}}</th>
+                            </tr>
+
+                        </table>
+                        
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div id="content_footer"></div>
+        <div id="footer">
+            <p>Copyright &copy; zhoriifrosman
+        </div>
     </div>
-    <div id="content_header"></div>
-    <div id="site_content">
-
-      <div id="content">
-        <strong>Welcome, username</strong><br/><br/>
-        
-        <p><strong>Your Leave Record</strong></p>
-
-<strong>Your leave balance (days) : leave_balance  <strong><br /><br />
-
- </div>
-    </div>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-    <div id="content_footer"></div>
-    <div id="footer">
-      <p>Copyright &copy; zhoriifrosman</div>
-  </div>
 </body>
+
 </html>

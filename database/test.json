@@ -1,0 +1,18 @@
+{
+    "Username":"",
+    "Password":"",
+    "Email":"",
+    "FullName":"",
+    "Gender":"",
+    "IC":"",
+    "Phone":"",
+    "LeaveBalance":"",
+    "LeaveType":"Replacement/Emergency/Annual/TimeOut",
+    "ApplyDate":"",
+    "StartDate":"",
+    "EndDate":"",
+    "NumDays":"",
+    "Remark":"",
+    "Status":"Pending",
+    "Role":"staff/hr"
+}

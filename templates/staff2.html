@@ -47,11 +47,11 @@
        
       </div>
       <div id="content">
-        <strong>Welcome, username</strong><br/><br/>
+        <strong>Welcome, {{.Username}}</strong><br/><br/>
         
                       
 
-<strong>Your leave balance (days) : leave_balance </strong> <br /><br />
+<strong>Your leave balance (days) : {{.LeaveBalance}} </strong> <br /><br />
 
 <form method="post">
 <table width="500" border="2">
@@ -59,7 +59,7 @@
 <td>Apply Date</td>
 <td>:</td>
 <input id="apply" type="hidden" value="set_date" >
-<td>apply_date</td>
+<td id="dCurTime"></td>
 </tr>
 <tr>
 <td>Start Date</td>
@@ -97,6 +97,13 @@
 </body>
 </html>
 <script>
+    n =  new Date();
+    y = n.getFullYear();
+    m = n.getMonth() + 1;
+    d = n.getDate();
+    document.getElementById("dCurTime").innerHTML = m + "/" + d + "/" + y;
+</script>
+<script>
 function myFunction(val) {
 	var oneDay = 24*60*60*1000;
     var x = document.getElementById("start").value;
@@ -117,7 +124,6 @@ function validation(val) {
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 	if(diffDays < 3){ 
         alert('Apply date must be 3 days before start date !!!');
-        window.location.href='leave_application.php?success';
 	}
 }
 </script>

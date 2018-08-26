@@ -32,41 +32,41 @@
     <div id="content_header"></div>
     <div id="site_content">
       <div id="sidebar_container">
-        
+          
         
       </div>
       <div id="content">
-        <strong>Welcome, {{.Username}}</strong><br/><br/>
-		<p><strong>Your profile</strong></p>
+        <strong>Welcome, { {.Username}}</strong><br/><br/>
+		<p><strong>Update Staff Annual Leave</strong></p>
 
-<table width=500 border="4">
-<tr>
-<td>Name :</td>
+        <table width='800' border='2'>
+                <tr>
+                <th>No</th>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Leave Balance</th>
+                <th>Action</th>
+                </tr>
 
-<td>{{.FullName}}</td>
-</tr>
-<tr>
-<td>IC :</td>
-
-<td>{{.IC}}</td>
-</tr>
-<tr>
-<td>Gender :</td>
-
-<td>{{.Gender}}</td>
-</tr>
-<tr>
-<td>Email :</td>
-
-<td>{{.Email}}</td>
-</tr>
-<tr>
-<td>Phone :</td>
-
-<td>{{.Phone}}</td>
-</tr>
-
-</table>
+                {{with .StaffLeave}}
+            {{range .}}
+                my friend name is {{.ByName}}
+            {{end}}
+            {{end}}
+                
+                <tr>
+                <th>1</th>
+                <th>{ {.ByName}}</th>
+                <th>{ {.ByFullName}}</th>
+                <th>{ {.Phone}}</th>
+                <th>{ {.Email}}</th>
+                <th>{ {.LeaveBalance}}</th>
+                <th><a href=""><button>Update</button></a></th>
+                </tr>
+                
+                </table>
 <a href="update.php"><button class="btn btn-primary">UPDATE</button><br/><br/><br/>
 </div>
     </div>
