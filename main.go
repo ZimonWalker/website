@@ -97,16 +97,14 @@ func Home(w http.ResponseWriter, r *http.Request) {
 				gp = Page{Title: "loggedStaff", Body: l.Username}
 				http.Redirect(w, r, "/staff/", http.StatusFound)
 				return
-			} else {
-				// resp, err := http.PostForm("http://example.com/form", url.Values{"key": {"Value"}, "id": {"123"}})
-				gp = Page{Title: "loggedHr", Body: l.Username}
-				http.Redirect(w, r, "/hr/", http.StatusFound)
-				return
 			}
+			// resp, err := http.PostForm("http://example.com/form", url.Values{"key": {"Value"}, "id": {"123"}})
+			gp = Page{Title: "loggedHr", Body: l.Username}
+			http.Redirect(w, r, "/hr/", http.StatusFound)
+			return
 
-		} else {
-			fmt.Println("Failed Login")
 		}
+		fmt.Println("Failed Login")
 	}
 
 	render(w, "home.html", p)
