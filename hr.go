@@ -19,13 +19,19 @@ type HrPage struct {
 	Role     string `json:"Role"`
 }
 
+// HRList struct
+type HRList struct {
+	Username  string      `json:"Username"`
+	StaffPage []StaffPage `json:"StaffPage"`
+}
+
 // HRLeave struct
 type HRLeave struct {
-	StaffLeave []StaffLeave `json:"staffLeave"`
+	Username   string       `json:"Username"`
+	StaffLeave []StaffLeave `json:"StaffLeave"`
 }
 
 var hp = &HrPage{}
-var hl = &HRLeave{}
 
 //Hr func
 func Hr(w http.ResponseWriter, r *http.Request) {
@@ -69,16 +75,68 @@ func Hr2(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 	}
 
+	files, err := ioutil.ReadDir("./database/staff")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	i := 0
+	var hlist = &HRList{Username: gp.Body}
+
+	for _, f := range files {
+		// fmt.Println(f.Name(), i)
+		var miniSL StaffPage
+		miniSL.Index = i
+		db := "./database/staff/" + f.Name()
+		var content []byte
+		content, err := ioutil.ReadFile(db)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// Parsing/Unmarshalling JSON encoding/json
+		if err = json.Unmarshal(content, &miniSL); err != nil {
+			log.Fatalln(err)
+			// panic(err)
+		}
+
+		hlist.StaffPage = append(hlist.StaffPage, miniSL)
+
+		i++
+	}
+
+	renderHR2(w, "hr2.html", hlist)
+}
+
+func renderHR2(w http.ResponseWriter, tmpl string, p *HRList) {
+	err := templates.ExecuteTemplate(w, tmpl, p)
+
+	if err != nil {
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	}
+
+}
+
+// Hr3 func
+func Hr3(w http.ResponseWriter, r *http.Request) {
+	if gp.Title != "loggedHr" {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
+
 	files, err := ioutil.ReadDir("./database/leave")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	i := 0
+	var hl = &HRLeave{Username: gp.Body}
 
 	for _, f := range files {
 		// fmt.Println(f.Name(), i)
 		var miniSL StaffLeave
+		miniSL.Index = i
 		db := "./database/leave/" + f.Name()
 		var content []byte
 		content, err := ioutil.ReadFile(db)
@@ -97,10 +155,10 @@ func Hr2(w http.ResponseWriter, r *http.Request) {
 		i++
 	}
 
-	renderHR2(w, "hr2.html", hl)
+	renderHR3(w, "hr3.html", hl)
 }
 
-func renderHR2(w http.ResponseWriter, tmpl string, p *HRLeave) {
+func renderHR3(w http.ResponseWriter, tmpl string, p *HRLeave) {
 	err := templates.ExecuteTemplate(w, tmpl, p)
 
 	if err != nil {
@@ -110,9 +168,3 @@ func renderHR2(w http.ResponseWriter, tmpl string, p *HRLeave) {
 	}
 
 }
-
-// //Staff3 func
-// func Staff3(w http.ResponseWriter, r *http.Request) {
-// 	page := &Page{Title: "p.UserName", Body: []byte("not Logged in")}
-// 	render(w, "staff3.html", page)
-// }

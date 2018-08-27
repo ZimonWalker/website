@@ -57,7 +57,7 @@ func main() {
 	http.HandleFunc("/staff3/", Staff3)
 	http.HandleFunc("/hr/", Hr)
 	http.HandleFunc("/hr2/", Hr2)
-	// http.HandleFunc("/hr3/", Hr3)
+	http.HandleFunc("/hr3/", Hr3)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 

@@ -9,6 +9,7 @@ import (
 
 // StaffPage struct
 type StaffPage struct {
+	Index        int    `json:"Index"`
 	Username     string `json:"Username"`
 	Password     string `json:"Password"`
 	Email        string `json:"Email"`
@@ -23,6 +24,7 @@ type StaffPage struct {
 
 // StaffLeave struct
 type StaffLeave struct {
+	Index        int    `json:"Index"`
 	ByName       string `json:"ByName"`
 	ByFullName   string `json:"ByFullName"`
 	ByEmail      string `json:"ByEmail"`
