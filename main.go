@@ -29,7 +29,7 @@ type LoginCre struct {
 }
 
 var gp = Page{
-	Title: "Default",
+	Title: "",
 	Body:  "",
 }
 
@@ -58,6 +58,7 @@ func main() {
 	http.HandleFunc("/hr/", Hr)
 	http.HandleFunc("/hr2/", Hr2)
 	http.HandleFunc("/hr3/", Hr3)
+	http.HandleFunc("/logout/", Logout)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
@@ -95,10 +96,12 @@ func Home(w http.ResponseWriter, r *http.Request) {
 			if l.Role == "staff" {
 				gp = Page{Title: "loggedStaff", Body: l.Username}
 				http.Redirect(w, r, "/staff/", http.StatusFound)
+				return
 			} else {
 				// resp, err := http.PostForm("http://example.com/form", url.Values{"key": {"Value"}, "id": {"123"}})
 				gp = Page{Title: "loggedHr", Body: l.Username}
 				http.Redirect(w, r, "/hr/", http.StatusFound)
+				return
 			}
 
 		} else {
@@ -196,4 +199,13 @@ func parseArray(anArray []interface{}, l *LoginCre) {
 			// }
 		}
 	}
+}
+
+// Logout func
+func Logout(w http.ResponseWriter, r *http.Request) {
+
+	gp = Page{Title: "", Body: ""}
+
+	http.Redirect(w, r, "/", http.StatusFound)
+	return
 }

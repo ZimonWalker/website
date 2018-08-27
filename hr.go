@@ -36,8 +36,10 @@ var hp = &HrPage{}
 //Hr func
 func Hr(w http.ResponseWriter, r *http.Request) {
 
-	if gp.Title != "loggedHr" {
+	if gp.Title != "loggedHr" || gp.Title == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
+
+		return
 	}
 
 	u := gp.Body
@@ -71,8 +73,9 @@ func renderHR(w http.ResponseWriter, tmpl string, p *HrPage) {
 
 //Hr2 func
 func Hr2(w http.ResponseWriter, r *http.Request) {
-	if gp.Title != "loggedHr" {
+	if gp.Title != "loggedHr" || gp.Title == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
+		return
 	}
 
 	files, err := ioutil.ReadDir("./database/staff")
@@ -121,8 +124,9 @@ func renderHR2(w http.ResponseWriter, tmpl string, p *HRList) {
 
 // Hr3 func
 func Hr3(w http.ResponseWriter, r *http.Request) {
-	if gp.Title != "loggedHr" {
+	if gp.Title != "loggedHr" || gp.Title == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
+		return
 	}
 
 	files, err := ioutil.ReadDir("./database/leave")

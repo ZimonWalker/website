@@ -43,8 +43,9 @@ var sl = &StaffLeave{}
 
 //Staff func
 func Staff(w http.ResponseWriter, r *http.Request) {
-	if gp.Title != "loggedStaff" {
+	if gp.Title != "loggedStaff" || gp.Title == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
+		return
 	}
 
 	u := gp.Body
@@ -67,8 +68,9 @@ func Staff(w http.ResponseWriter, r *http.Request) {
 
 //Staff2 func
 func Staff2(w http.ResponseWriter, r *http.Request) {
-	if gp.Title != "loggedStaff" {
+	if gp.Title != "loggedStaff" || gp.Title == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
+		return
 	}
 
 	renderStaff2(w, "staff2.html", sp)
@@ -87,8 +89,9 @@ func renderStaff2(w http.ResponseWriter, tmpl string, p *StaffPage) {
 
 //Staff3 func
 func Staff3(w http.ResponseWriter, r *http.Request) {
-	if gp.Title != "loggedStaff" {
+	if gp.Title != "loggedStaff" || gp.Title == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
+		return
 	}
 
 	u := sp.LeaveID
