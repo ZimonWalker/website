@@ -41,9 +41,11 @@ var templates = template.Must(template.ParseFiles(
 	"templates/staff.html",
 	"templates/staff2.html",
 	"templates/staff3.html",
+	"templates/staff4.html",
 	"templates/hr.html",
 	"templates/hr2.html",
 	"templates/hr3.html",
+	"templates/hr4.html",
 ))
 
 func main() {
@@ -57,9 +59,11 @@ func main() {
 	http.HandleFunc("/staff/", Staff)
 	http.HandleFunc("/staff2/", Staff2)
 	http.HandleFunc("/staff3/", Staff3)
+	http.HandleFunc("/staff4/", Staff4)
 	http.HandleFunc("/hr/", Hr)
 	http.HandleFunc("/hr2/", Hr2)
 	http.HandleFunc("/hr3/", Hr3)
+	http.HandleFunc("/hr4/", Hr4)
 	http.HandleFunc("/logout/", Logout)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))

@@ -24,7 +24,7 @@
                     <li><a href="/staff">Profile</a></li>
                     <li><a href="/staff2">Leave Application</a></li>
                     <li><a href="/staff3">Leave Status</a></li>
-					<li class="selected"><a href="/staff4">Staff Q&A</a></li>
+                    <li class="selected"><a href="/staff4">Staff Q&A</a></li>
                     <li><a href="/logout">Log Out</a></li>
                 </ul>
             </div>
@@ -43,23 +43,38 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Question</th>
-						<th>Answer</th>
+                        <th>Answer</th>
                         <th>Status</th>
                     </tr>
 
-                    {{with .StaffLeave}} {{range .}}
+                    {{with .StaffQnA}} {{range .}}
+
                     <tr>
                         <th>{{.Index}}</th>
                         <th>{{.ByFullName}}</th>
-                        <th>{{.Email}}</th>
+                        <th>{{.ByEmail}}</th>
                         <th>{{.Question}}</th>
-						<th>{{.Answer}}</th>
+                        <th>{{.Answer}}</th>
 
-                        <th>sent</th>
+                        <th>Sent</th>
 
-                        
+
                     </tr>
+
                     {{end}} {{end}}
+
+                    <tr>
+                        <form action="/staff4/updateLeave" method="POST">
+                            <th>-</th>
+                            <th>-</th>
+                            <th>-</th>
+                            <th><textarea name="Question"></textarea></th>
+                            <th>-</th>
+
+                            <th><button type="submit">Send</button></th>
+
+                        </form>
+                    </tr>
 
 
 

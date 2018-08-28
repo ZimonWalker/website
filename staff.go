@@ -20,6 +20,7 @@ type StaffPage struct {
 	Phone        string   `json:"Phone"`
 	LeaveBalance int      `json:"LeaveBalance"`
 	LeaveID      []string `json:"LeaveID"`
+	QnaID        []string `json:"QnaID"`
 	Role         string   `json:"Role"`
 }
 
@@ -38,6 +39,17 @@ type StaffLeave struct {
 	NumDays      int64  `json:"NumDays"`
 	Remark       string `json:"Remark"`
 	Status       string `json:"Status"`
+}
+
+// StaffQnA struct
+type StaffQnA struct {
+	Index      int    `json:"Index"`
+	ID         string `json:"ID"`
+	ByName     string `json:"ByName"`
+	ByFullName string `json:"ByFullName"`
+	ByEmail    string `json:"ByEmail"`
+	Question   string `json:"Question"`
+	Answer     string `json:"Answer"`
 }
 
 var sp = &StaffPage{}
@@ -193,6 +205,97 @@ func Staff3(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderStaff3(w http.ResponseWriter, tmpl string, p *HRLeave) {
+	err := templates.ExecuteTemplate(w, tmpl, p)
+
+	if err != nil {
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	}
+
+}
+
+// Staff4 func
+func Staff4(w http.ResponseWriter, r *http.Request) {
+	if gp.Title != "loggedStaff" || gp.Title == "" {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	getPath := r.URL.Path[len("/staff4/"):]
+	// fmt.Println(getPath)
+
+	if getPath == "updateLeave" {
+
+		Question := r.FormValue("Question")
+		Answer := "-"
+		ByFullName := sp.FullName
+		ByName := sp.Username
+		ByEmail := sp.Email
+		ID := genXid()
+
+		db := "./database/qna/" + ID + ".json"
+
+		// Creating the maps for JSON
+		m := StaffQnA{
+			Question:   Question,
+			Answer:     Answer,
+			ByFullName: ByFullName,
+			ByName:     ByName,
+			ByEmail:    ByEmail,
+			ID:         ID,
+		}
+
+		// fmt.Println(m)
+
+		b, err := json.Marshal(m)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
+
+		sp.QnaID = append(sp.QnaID, ID)
+
+		db = "./database/staff/" + ByName + ".json"
+
+		b, err = json.Marshal(sp)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
+
+	}
+
+	i := 0
+
+	var sqna = &HRQna{}
+
+	for _, id := range sp.QnaID {
+		var miniSQNA StaffQnA
+		i++
+		db := "./database/qna/" + id + ".json"
+		content, err := ioutil.ReadFile(db)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		if err = json.Unmarshal(content, &miniSQNA); err != nil {
+			log.Fatalln(err)
+			// panic(err)
+		}
+		miniSQNA.Index = i
+
+		sqna.StaffQnA = append(sqna.StaffQnA, miniSQNA)
+	}
+
+	renderStaff4(w, "staff4.html", sqna)
+}
+
+func renderStaff4(w http.ResponseWriter, tmpl string, p *HRQna) {
 	err := templates.ExecuteTemplate(w, tmpl, p)
 
 	if err != nil {

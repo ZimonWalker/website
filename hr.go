@@ -32,6 +32,11 @@ type HRLeave struct {
 	StaffLeave []StaffLeave `json:"StaffLeave"`
 }
 
+// HRQna struct
+type HRQna struct {
+	StaffQnA []StaffQnA `json:"StaffQnA"`
+}
+
 var hp = &HrPage{}
 
 //Hr func
@@ -244,6 +249,91 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderHR3(w http.ResponseWriter, tmpl string, p *HRLeave) {
+	err := templates.ExecuteTemplate(w, tmpl, p)
+
+	if err != nil {
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	}
+
+}
+
+// Hr4 func
+func Hr4(w http.ResponseWriter, r *http.Request) {
+	if gp.Title != "loggedHr" || gp.Title == "" {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	getPath := r.URL.Path[len("/hr4/"):]
+	// fmt.Println(getPath)
+
+	if getPath == "updateLeave" {
+		Question := r.FormValue("Question")
+		Answer := r.FormValue("Answer")
+		ByFullName := r.FormValue("ByFullName")
+		ByName := r.FormValue("ByName")
+		ByEmail := r.FormValue("ByEmail")
+		ID := r.FormValue("ID")
+
+		db := "./database/qna/" + ID + ".json"
+
+		// Creating the maps for JSON
+		m := StaffQnA{
+			Question:   Question,
+			Answer:     Answer,
+			ByFullName: ByFullName,
+			ByName:     ByName,
+			ByEmail:    ByEmail,
+			ID:         ID,
+		}
+
+		// fmt.Println(m)
+
+		b, err := json.Marshal(m)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
+
+	}
+
+	files, err := ioutil.ReadDir("./database/qna")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	var sqna = &HRQna{}
+
+	for i, f := range files {
+		// fmt.Println(f.Name(), i)
+		var miniSQNA StaffQnA
+
+		db := "./database/qna/" + f.Name()
+
+		content, err := ioutil.ReadFile(db)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// Parsing/Unmarshalling JSON encoding/json
+		if err = json.Unmarshal(content, &miniSQNA); err != nil {
+			log.Fatalln(err)
+			// panic(err)
+		}
+
+		miniSQNA.Index = i + 1
+
+		sqna.StaffQnA = append(sqna.StaffQnA, miniSQNA)
+	}
+
+	renderHR4(w, "hr4.html", sqna)
+}
+
+func renderHR4(w http.ResponseWriter, tmpl string, p *HRQna) {
 	err := templates.ExecuteTemplate(w, tmpl, p)
 
 	if err != nil {
