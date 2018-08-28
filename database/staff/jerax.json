@@ -1,12 +1,12 @@
 {
-    "Username": "jerax",
-    "Password": "j123",
     "Email": "jerax@gmail.com",
     "FullName": "Jerax OG",
     "Gender": "Male",
     "IC": "12353",
-    "Phone": "091301414",
-    "LeaveBalance": 5,
+    "LeaveBalance": 8,
     "LeaveID": "1232fdsf",
-    "Role":"staff"
+    "Password": "j123",
+    "Phone": "091301414",
+    "Role": "staff",
+    "Username": "jerax"
 }

@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 // HrPage struct
@@ -76,6 +77,47 @@ func Hr2(w http.ResponseWriter, r *http.Request) {
 	if gp.Title != "loggedHr" || gp.Title == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
+	}
+
+	getPath := r.URL.Path[len("/hr2/"):]
+	// fmt.Println(getPath)
+
+	if getPath == "updateLeave" {
+		username := r.FormValue("username")
+		num := r.FormValue("num")
+
+		db := "./database/staff/" + username + ".json"
+		var content []byte
+		content, err := ioutil.ReadFile(db)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// Creating the maps for JSON
+		m := map[string]interface{}{}
+
+		// Parsing/Unmarshalling JSON encoding/json
+		if err = json.Unmarshal(content, &m); err != nil {
+			log.Fatalln(err)
+			// panic(err)
+		}
+
+		// fmt.Println(m)
+
+		if i, err := strconv.ParseInt(num, 10, 64); err == nil {
+			m["LeaveBalance"] = i
+		}
+
+		// fmt.Println(m)
+
+		var b []byte
+		b, err = json.Marshal(m)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
 	}
 
 	files, err := ioutil.ReadDir("./database/staff")
