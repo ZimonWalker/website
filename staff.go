@@ -25,6 +25,7 @@ type StaffPage struct {
 // StaffLeave struct
 type StaffLeave struct {
 	Index        int    `json:"Index"`
+	ID           string `json:"ID"`
 	ByName       string `json:"ByName"`
 	ByFullName   string `json:"ByFullName"`
 	ByEmail      string `json:"ByEmail"`

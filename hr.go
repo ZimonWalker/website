@@ -131,6 +131,7 @@ func Hr2(w http.ResponseWriter, r *http.Request) {
 	for _, f := range files {
 		// fmt.Println(f.Name(), i)
 		var miniSL StaffPage
+		i++
 		miniSL.Index = i
 		db := "./database/staff/" + f.Name()
 		var content []byte
@@ -147,7 +148,6 @@ func Hr2(w http.ResponseWriter, r *http.Request) {
 
 		hlist.StaffPage = append(hlist.StaffPage, miniSL)
 
-		i++
 	}
 
 	renderHR2(w, "hr2.html", hlist)
@@ -171,6 +171,45 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	getPath := r.URL.Path[len("/hr3/"):]
+	// fmt.Println(getPath)
+
+	if getPath == "updateLeave" {
+		elemID := r.FormValue("elemID")
+		dStatus := r.FormValue("dStatus")
+
+		db := "./database/leave/" + elemID + ".json"
+		var content []byte
+		content, err := ioutil.ReadFile(db)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// Creating the maps for JSON
+		m := map[string]interface{}{}
+
+		// Parsing/Unmarshalling JSON encoding/json
+		if err = json.Unmarshal(content, &m); err != nil {
+			log.Fatalln(err)
+			// panic(err)
+		}
+
+		// fmt.Println(m)
+
+		m["Status"] = dStatus
+
+		// fmt.Println(m)
+
+		var b []byte
+		b, err = json.Marshal(m)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
+	}
+
 	files, err := ioutil.ReadDir("./database/leave")
 	if err != nil {
 		log.Fatalln(err)
@@ -182,6 +221,7 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 	for _, f := range files {
 		// fmt.Println(f.Name(), i)
 		var miniSL StaffLeave
+		i++
 		miniSL.Index = i
 		db := "./database/leave/" + f.Name()
 		var content []byte
@@ -197,8 +237,6 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 		}
 
 		hl.StaffLeave = append(hl.StaffLeave, miniSL)
-
-		i++
 	}
 
 	renderHR3(w, "hr3.html", hl)

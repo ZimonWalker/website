@@ -1,13 +1,1 @@
-{
-    "ByName": "jerax",
-    "ByFullName": "jerax",
-    "ByEmail": "jerax@gmail.com",
-	"LeaveBalance": 5,
-    "LeaveType": "Replacement",
-    "ApplyDate": "",
-    "StartDate": "",
-    "EndDate": "",
-    "NumDays": 5,
-    "Remark": "",
-    "Status": "Pending"
-}
+{"ApplyDate":"","ByEmail":"jerax@gmail.com","ByFullName":"jerax","ByName":"jerax","EndDate":"","ID":"1232fdsf","LeaveBalance":5,"LeaveType":"Replacement","NumDays":5,"Remark":"","StartDate":"","Status":"Pending"}
