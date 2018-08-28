@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>HOD Page</title>
+  <meta name="description" content="website description" />
+  <meta name="keywords" content="website keywords, website keywords" />
+  <link rel="stylesheet" href="../static/css/hr.css">
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <div id="logo">
+        <div id="logo_text">
+          <!-- class="logo_colour", allows you to change the colour of the text -->
+          <h1><a href="/"><span class="logo_colour">Head Of Department</span></a></h1>
+          <h2>Pusat Perkembangan Minda Darul Ridzuan</h2>
+        </div>
+      </div>
+      <div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="/hr">Profile</a></li>
+          <li><a href="/hr2">Staff List</a></li>
+          <li><a href="/hr3">Leave Applications</a></li>
+		  <li class="selected"><a href="/hr4">Staff Q&A</a></li>
+          <li><a href="/logout">Log Out</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="content_header"></div>
+    <div id="site_content">
+      <div id="sidebar_container">
+
+
+      </div>
+      <div id="content">
+<p><strong>Staff Q&A</strong></p>
+
+                <table width='900' border='2'>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Question</th>
+						<th>Answer</th>
+                        <th>Status</th>
+                    </tr>
+
+                    {{with .StaffLeave}} {{range .}}
+                    <tr>
+                        <th>{{.Index}}</th>
+                        <th>{{.ByFullName}}</th>
+                        <th>{{.Email}}</th>
+                        <th>{{.Question}}</th>
+						<th>{{.Answer}}</th>
+
+                        <th>sent</th>
+
+                        
+                    </tr>
+                    {{end}} {{end}}
+
+
+
+                </table>
+
+                <br/><br/><br/>
+            </div>
+        </div>
+    <div id="content_footer"></div>
+    <div id="footer">
+      <p>Hazim & Imran
+    </div>
+  </div>
+</body>
+
+</html>
