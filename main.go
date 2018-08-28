@@ -23,11 +23,11 @@ type Page struct {
 
 //LoginCre type
 type LoginCre struct {
-	Username     string
-	Password     string
-	Role         string
-	LoopUsername bool
-	LoginFlag    bool
+	Username     string `json:"Username"`
+	Password     string `json:"password"`
+	Role         string `json:"role"`
+	LoopUsername bool   `json:"LoopUsername"`
+	LoginFlag    bool   `json:"LoginFlag"`
 }
 
 var gp = Page{
@@ -37,7 +37,7 @@ var gp = Page{
 
 var templates = template.Must(template.ParseFiles(
 	"templates/home.html",
-	"templates/user.html",
+	"templates/register.html",
 	"templates/staff.html",
 	"templates/staff2.html",
 	"templates/staff3.html",
@@ -46,6 +46,7 @@ var templates = template.Must(template.ParseFiles(
 	"templates/hr2.html",
 	"templates/hr3.html",
 	"templates/hr4.html",
+	"templates/hr5.html",
 ))
 
 func main() {
@@ -55,7 +56,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	http.HandleFunc("/", Home)
-	http.HandleFunc("/user/", User)
+	http.HandleFunc("/register/", Register)
 	http.HandleFunc("/staff/", Staff)
 	http.HandleFunc("/staff2/", Staff2)
 	http.HandleFunc("/staff3/", Staff3)
@@ -64,6 +65,7 @@ func main() {
 	http.HandleFunc("/hr2/", Hr2)
 	http.HandleFunc("/hr3/", Hr3)
 	http.HandleFunc("/hr4/", Hr4)
+	http.HandleFunc("/hr5/", Hr5)
 	http.HandleFunc("/logout/", Logout)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -117,6 +119,28 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 		}
 		fmt.Println("Failed Login")
+	} else if s == "signup" {
+		p := &StaffPage{
+			Username:     r.FormValue("Username"),
+			Password:     r.FormValue("Password"),
+			Email:        r.FormValue("Email"),
+			FullName:     r.FormValue("FullName"),
+			Gender:       r.FormValue("Gender"),
+			IC:           r.FormValue("IC"),
+			Phone:        r.FormValue("Phone"),
+			Role:         "staff",
+			LeaveBalance: 20,
+		}
+
+		db := "./database/register/" + r.FormValue("Username") + ".json"
+
+		b, err := json.Marshal(p)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
 	}
 
 	render(w, "home.html", p)
@@ -127,37 +151,28 @@ func myJSONFunc(l *LoginCre) {
 
 	// Read from file
 	//declare db path
-	db := "./database/login.json"
-	var content []byte
+
+	db := "./database/login/" + l.Username + ".json"
+
 	content, err := ioutil.ReadFile(db)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	// Creating the maps for JSON
-	m := map[string]interface{}{}
+	cre := &LoginCre{}
 
 	// Parsing/Unmarshalling JSON encoding/json
-	if err = json.Unmarshal(content, &m); err != nil {
+	if err = json.Unmarshal(content, &cre); err != nil {
 		log.Fatalln(err)
 		// panic(err)
 	}
 
-	// test := d["data"].(map[string]interface{})["type"]
-	// m["username1"].(map[string]interface{})["test"].(map[string]interface{})["answer"] = "koko"
+	if cre.Password == l.Password {
+		l.Role = cre.Role
+		l.LoginFlag = true
+	}
 
-	// fmt.Println(m["username1"].(map[string]interface{})["test"].(map[string]interface{})["answer"])
-
-	// var b []byte
-	// b, err = json.Marshal(m)
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// }
-	// if err = ioutil.WriteFile(db, b, 0644); err != nil {
-	// 	log.Fatalln(err)
-	// }
-
-	parseMap(m, l)
+	// parseMap(m, l)
 }
 
 func parseMap(aMap map[string]interface{}, l *LoginCre) {
@@ -218,4 +233,13 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/", http.StatusFound)
 	return
+}
+
+// Register func
+func Register(w http.ResponseWriter, r *http.Request) {
+
+	p := &Page{
+		Title: "Default",
+	}
+	render(w, "register.html", p)
 }

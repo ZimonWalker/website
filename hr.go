@@ -5,11 +5,13 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
 // HrPage struct
 type HrPage struct {
+	Index    int    `json:"Index"`
 	Username string `json:"Username"`
 	Password string `json:"Password"`
 	Email    string `json:"Email"`
@@ -334,6 +336,115 @@ func Hr4(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderHR4(w http.ResponseWriter, tmpl string, p *HRQna) {
+	err := templates.ExecuteTemplate(w, tmpl, p)
+
+	if err != nil {
+
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	}
+
+}
+
+// Hr5 func
+func Hr5(w http.ResponseWriter, r *http.Request) {
+	if gp.Title != "loggedHr" || gp.Title == "" {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	getPath := r.URL.Path[len("/hr5/"):]
+	// fmt.Println(getPath)
+
+	if getPath == "updateLeave" {
+		Username := r.FormValue("Username")
+		status := r.FormValue("dStatus")
+
+		db := "./database/register/" + Username + ".json"
+
+		if status == "Denied" {
+			if err := os.Remove(db); err != nil {
+				log.Fatalln(err)
+			}
+		} else if status == "Approved" {
+			var miniSQNA StaffPage
+
+			content, err := ioutil.ReadFile(db)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			// Parsing/Unmarshalling JSON encoding/json
+			if err = json.Unmarshal(content, &miniSQNA); err != nil {
+				log.Fatalln(err)
+				// panic(err)
+			}
+
+			db = "./database/staff/" + Username + ".json"
+
+			b, err := json.Marshal(miniSQNA)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			if err = ioutil.WriteFile(db, b, 0644); err != nil {
+				log.Fatalln(err)
+			}
+
+			db = "./database/login/" + Username + ".json"
+
+			cre := &LoginCre{
+				Password: miniSQNA.Password,
+				Role:     miniSQNA.Role,
+			}
+
+			b, err = json.Marshal(cre)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			if err = ioutil.WriteFile(db, b, 0644); err != nil {
+				log.Fatalln(err)
+			}
+
+			if err := os.Remove("./database/register/" + Username + ".json"); err != nil {
+				log.Fatalln(err)
+			}
+		}
+
+	}
+
+	files, err := ioutil.ReadDir("./database/register")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	var sqna = &HRList{}
+
+	for i, f := range files {
+		// fmt.Println(f.Name(), i)
+		var miniSQNA StaffPage
+
+		db := "./database/register/" + f.Name()
+
+		content, err := ioutil.ReadFile(db)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// Parsing/Unmarshalling JSON encoding/json
+		if err = json.Unmarshal(content, &miniSQNA); err != nil {
+			log.Fatalln(err)
+			// panic(err)
+		}
+
+		miniSQNA.Index = i + 1
+
+		sqna.StaffPage = append(sqna.StaffPage, miniSQNA)
+	}
+
+	renderHR5(w, "hr5.html", sqna)
+}
+
+func renderHR5(w http.ResponseWriter, tmpl string, p *HRList) {
 	err := templates.ExecuteTemplate(w, tmpl, p)
 
 	if err != nil {

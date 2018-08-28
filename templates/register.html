@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--link rel="stylesheet" href="../static/css/index.css"-->
+    <meta charset="UTF-8">
+
+    <title>User Register</title>
+    <style>
+        body {
+            background: #D8D8D8;
+            background-size: cover;
+            font-family: Montserrat;
+        }
+
+        .logo {
+            width: 600px;
+            height: 100px;
+            background: url('http://www.darulridzuan.com.my/images/Logo.png') no-repeat;
+            margin: 30px auto;
+        }
+
+        .login-block {
+            width: 320px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            border-top: 5px solid #00c6f0;
+            margin: 0 auto;
+        }
+
+        .login-block h1 {
+            text-align: center;
+            color: #000;
+            font-size: 18px;
+
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .login-block input {
+            width: 100%;
+            height: 42px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-family: Montserrat;
+            padding: 0 20px 0 50px;
+            outline: none;
+        }
+
+        .login-block input#username {
+            background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
+            background-size: 16px 80px;
+        }
+
+        .login-block input#username:focus {
+            background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px bottom no-repeat;
+            background-size: 16px 80px;
+        }
+
+        .login-block input#password {
+            background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
+            background-size: 16px 80px;
+        }
+
+        .login-block input#password:focus {
+            background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px bottom no-repeat;
+            background-size: 16px 80px;
+        }
+
+        .login-block input:active,
+        .login-block input:focus {
+            border: 1px solid #00c6f0;
+        }
+
+        .login-block button {
+            width: 100%;
+            height: 40px;
+            background: #00c6f0;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #00c6f0;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-family: Montserrat;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .login-block button:hover {
+            background: #ff7b81;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo"></div>
+    <div class="login-block">
+        <h1>Register Form</h1>
+        <form action="/signup" method="POST">
+            <input type="text" name="Email" placeholder="Email" id="Email" required /><br />
+            <input type="text" name="Username" placeholder="Username" id="username" required /><br />
+            <input type="password" name="Password" placeholder="Password" id="passwordM" required /><br />
+            <input type="password" name="cPassword" placeholder="Conform Password" id="password2" required /><br />
+            <input type="text" name="FullName" placeholder="FullName" id="FullName" required /><br />
+            <input type="text" name="Gender" placeholder="Gender" id="Gender" required /><br />
+            <input type="text" name="IC" placeholder="IC" id="IC" required /><br />
+            <input type="text" name="Phone" placeholder="Phone" id="Phone" required /><br />
+            <button id="btnSubmit" type="submit" name="submit" disabled>REGISTER</button>
+        </form>
+    </div>
+
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script>
+
+        var statusValid = false
+
+        $('#passwordM').keyup(function () {
+
+            var passw = $("#passwordM").val()
+            var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+            if (!(strongRegex.test(passw))) {
+
+                $("#passwordM").css("background-color", "red")
+                $("#btnSubmit").prop('disabled', true);
+                statusValid = false
+            } else {
+                $("#passwordM").css("background-color", "")
+                $("#btnSubmit").prop('disabled', false);
+                statusValid = true
+            }
+        });
+
+        $('#password2').keyup(function () {
+
+            var passw = $("#password2").val()
+            var passwM = $("#passwordM").val()
+
+            if (passw != passwM) {
+
+                $("#password2").css("background-color", "red")
+                $("#btnSubmit").prop('disabled', true);
+                statusValid = false
+
+            } else {
+                $("#password2").css("background-color", "")
+                $("#btnSubmit").prop('disabled', false);
+                statusValid = true
+            }
+        });
+
+        $('#Email').keyup(function () {
+
+            var email = $("#Email").val()
+
+            if (!validateEmail(email)) {
+
+                $("#Email").css("background-color", "red")
+                $("#btnSubmit").prop('disabled', true);
+                statusValid = false
+
+            } else {
+                $("#Email").css("background-color", "")
+                $("#btnSubmit").prop('disabled', false);
+                statusValid = true
+            }
+        });
+
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+
+
+    </script>
+</body>
+
+</html>
