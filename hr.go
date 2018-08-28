@@ -184,6 +184,8 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 	if getPath == "updateLeave" {
 		elemID := r.FormValue("elemID")
 		dStatus := r.FormValue("dStatus")
+		NumBal := r.FormValue("NumBal")
+		Username := r.FormValue("vLBUser")
 
 		db := "./database/leave/" + elemID + ".json"
 		var content []byte
@@ -213,6 +215,36 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 			log.Fatalln(err)
 		}
 		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
+
+		db2 := "./database/staff/" + Username + ".json"
+
+		content, err = ioutil.ReadFile(db2)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		// Creating the maps for JSON
+		m2 := map[string]interface{}{}
+
+		// Parsing/Unmarshalling JSON encoding/json
+		if err = json.Unmarshal(content, &m2); err != nil {
+			log.Fatalln(err)
+			// panic(err)
+		}
+
+		// fmt.Println(m)
+		ii, err := strconv.Atoi(NumBal)
+		m2["LeaveBalance"] = ii
+
+		// fmt.Println(m)
+
+		b, err = json.Marshal(m2)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db2, b, 0644); err != nil {
 			log.Fatalln(err)
 		}
 	}

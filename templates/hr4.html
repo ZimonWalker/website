@@ -57,9 +57,13 @@
               <th>{{.ByEmail}}<input type="hidden" name="ByEmail" value="{{.ByEmail}}"></th>
               <th>{{.Question}}<input type="hidden" name="Question" value="{{.Question}}">
                 <input type="hidden" name="ByName" value="{{.ByName}}"></th>
+                {{if (eq .Answer "-")}}
               <th><textarea name="Answer">{{.Answer}}</textarea></th>
-
               <th><button type="submit">Send</button></th>
+              {{else}}
+              <th>{{.Answer}}</th>
+              <th>Sent</th>
+              {{end}}
             </form>
 
           </tr>

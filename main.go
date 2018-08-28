@@ -156,7 +156,9 @@ func myJSONFunc(l *LoginCre) {
 
 	content, err := ioutil.ReadFile(db)
 	if err != nil {
-		log.Fatalln(err)
+		// log.Fatalln(err)
+		l.LoginFlag = false
+		return
 	}
 
 	cre := &LoginCre{}
