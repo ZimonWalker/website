@@ -5,21 +5,22 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 // StaffPage struct
 type StaffPage struct {
-	Index        int    `json:"Index"`
-	Username     string `json:"Username"`
-	Password     string `json:"Password"`
-	Email        string `json:"Email"`
-	FullName     string `json:"FullName"`
-	Gender       string `json:"Gender"`
-	IC           string `json:"IC"`
-	Phone        string `json:"Phone"`
-	LeaveBalance int64  `json:"LeaveBalance"`
-	LeaveID      string `json:"LeaveID"`
-	Role         string `json:"Role"`
+	Index        int      `json:"Index"`
+	Username     string   `json:"Username"`
+	Password     string   `json:"Password"`
+	Email        string   `json:"Email"`
+	FullName     string   `json:"FullName"`
+	Gender       string   `json:"Gender"`
+	IC           string   `json:"IC"`
+	Phone        string   `json:"Phone"`
+	LeaveBalance int      `json:"LeaveBalance"`
+	LeaveID      []string `json:"LeaveID"`
+	Role         string   `json:"Role"`
 }
 
 // StaffLeave struct
@@ -74,6 +75,76 @@ func Staff2(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	getPath := r.URL.Path[len("/staff2/"):]
+	// fmt.Println(getPath)
+
+	if getPath == "updateLeave" {
+
+		ApplyDate := r.FormValue("ApplyDate")
+		ByEmail := r.FormValue("Email")
+		ByFullName := r.FormValue("FullName")
+		ByName := r.FormValue("Username")
+		EndDate := r.FormValue("end_date")
+		ID := genXid()
+		LeaveBalance := r.FormValue("LeaveBalance")
+		LeaveType := r.FormValue("leave_type")
+		NumDays := r.FormValue("NumDays")
+		Remark := r.FormValue("remark")
+		StartDate := r.FormValue("start_date")
+		Status := "Pending"
+
+		db := "./database/leave/" + ID + ".json"
+
+		var LeaveBalance64 int64
+		var NumDays64 int64
+
+		if i, err := strconv.ParseInt(LeaveBalance, 10, 64); err == nil {
+			LeaveBalance64 = i
+		}
+		if i, err := strconv.ParseInt(NumDays, 10, 64); err == nil {
+			NumDays64 = i
+		}
+
+		// Creating the maps for JSON
+		m := StaffLeave{
+			ApplyDate:    ApplyDate,
+			ByEmail:      ByEmail,
+			ByFullName:   ByFullName,
+			ByName:       ByName,
+			EndDate:      EndDate,
+			ID:           ID,
+			LeaveBalance: LeaveBalance64,
+			LeaveType:    LeaveType,
+			NumDays:      NumDays64,
+			Remark:       Remark,
+			StartDate:    StartDate,
+			Status:       Status,
+		}
+
+		// fmt.Println(m)
+
+		b, err := json.Marshal(m)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
+
+		sp.LeaveID = append(sp.LeaveID, ID)
+
+		db = "./database/staff/" + ByName + ".json"
+
+		b, err = json.Marshal(sp)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err = ioutil.WriteFile(db, b, 0644); err != nil {
+			log.Fatalln(err)
+		}
+
+	}
+
 	renderStaff2(w, "staff2.html", sp)
 }
 
@@ -95,27 +166,33 @@ func Staff3(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	u := sp.LeaveID
+	i := 0
+	// s := strconv.FormatInt(sp.LeaveBalance, 64)
+	s := strconv.Itoa(sp.LeaveBalance)
+	var hl = &HRLeave{Username: s}
 
-	if u != "" {
-		db := "./database/leave/" + u + ".json"
-		var content []byte
+	for _, id := range sp.LeaveID {
+		var miniSL StaffLeave
+		i++
+		db := "./database/leave/" + id + ".json"
 		content, err := ioutil.ReadFile(db)
 		if err != nil {
 			log.Fatalln(err)
 		}
 
-		// Parsing/Unmarshalling JSON encoding/json
-		if err = json.Unmarshal(content, &sl); err != nil {
+		if err = json.Unmarshal(content, &miniSL); err != nil {
 			log.Fatalln(err)
 			// panic(err)
 		}
+		miniSL.Index = i
+
+		hl.StaffLeave = append(hl.StaffLeave, miniSL)
 	}
 
-	renderStaff3(w, "staff3.html", sl)
+	renderStaff3(w, "staff3.html", hl)
 }
 
-func renderStaff3(w http.ResponseWriter, tmpl string, p *StaffLeave) {
+func renderStaff3(w http.ResponseWriter, tmpl string, p *HRLeave) {
 	err := templates.ExecuteTemplate(w, tmpl, p)
 
 	if err != nil {

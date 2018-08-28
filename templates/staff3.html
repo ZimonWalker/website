@@ -36,7 +36,7 @@
 
                 <p><strong>Your Leave Record</strong></p>
 
-                <strong>Your leave balance (days) : {{.LeaveBalance}} <strong><br /><br />
+                <strong>Your leave balance (days) : {{.Username}} <strong><br /><br />
 
                         <table width='900' border='1'>
                             <tr>
@@ -48,17 +48,19 @@
                                 <th>HOD Status</th>
                             </tr>
 
+                            {{with .StaffLeave}} {{range .}}
                             <tr>
-                                <th>1</th>
+                                <th>{{.Index}}</th>
                                 <th>{{.StartDate}}</th>
                                 <th>{{.EndDate}}</th>
                                 <th>{{.NumDays}}</th>
                                 <th>{{.Remark}}</th>
                                 <th>{{.Status}}</th>
                             </tr>
+                            {{end}} {{end}}
 
                         </table>
-                        
+
             </div>
         </div>
         <br/>

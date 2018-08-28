@@ -1,1 +1,12 @@
-{"Email":"topson@gmail.com","FullName":"Topson OG","Gender":"Male","IC":"12353","LeaveBalance":5,"LeaveID":"1232fdsf2","Password":"t123","Phone":"091301414","Role":"staff","Username":"topson"}
+{
+    "Email": "topson@gmail.com",
+    "FullName": "Topson OG",
+    "Gender": "Male",
+    "IC": "12353",
+    "LeaveBalance": 5,
+    "LeaveID": [""],
+    "Password": "t123",
+    "Phone": "091301414",
+    "Role": "staff",
+    "Username": "topson"
+}

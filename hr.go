@@ -132,7 +132,6 @@ func Hr2(w http.ResponseWriter, r *http.Request) {
 		// fmt.Println(f.Name(), i)
 		var miniSL StaffPage
 		i++
-		miniSL.Index = i
 		db := "./database/staff/" + f.Name()
 		var content []byte
 		content, err := ioutil.ReadFile(db)
@@ -145,6 +144,7 @@ func Hr2(w http.ResponseWriter, r *http.Request) {
 			log.Fatalln(err)
 			// panic(err)
 		}
+		miniSL.Index = i
 
 		hlist.StaffPage = append(hlist.StaffPage, miniSL)
 
@@ -222,7 +222,6 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 		// fmt.Println(f.Name(), i)
 		var miniSL StaffLeave
 		i++
-		miniSL.Index = i
 		db := "./database/leave/" + f.Name()
 		var content []byte
 		content, err := ioutil.ReadFile(db)
@@ -235,6 +234,8 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 			log.Fatalln(err)
 			// panic(err)
 		}
+
+		miniSL.Index = i
 
 		hl.StaffLeave = append(hl.StaffLeave, miniSL)
 	}

@@ -11,6 +11,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/segmentio/ksuid"
 )
 
 //Page is blablaba
@@ -73,6 +75,12 @@ func render(w http.ResponseWriter, tmpl string, p *Page) {
 
 	}
 
+}
+
+func genXid() string {
+	id := ksuid.New()
+	// fmt.Printf("github.com/segmentio/ksuid:  %s\n", id.String())
+	return id.String()
 }
 
 //Home handler for / renders the home.html
