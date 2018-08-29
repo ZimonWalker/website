@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -218,35 +219,38 @@ func Hr3(w http.ResponseWriter, r *http.Request) {
 			log.Fatalln(err)
 		}
 
-		db2 := "./database/staff/" + Username + ".json"
+		if dStatus == "Approved" {
+			db2 := "./database/staff/" + Username + ".json"
 
-		content, err = ioutil.ReadFile(db2)
-		if err != nil {
-			log.Fatalln(err)
+			content, err = ioutil.ReadFile(db2)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			// Creating the maps for JSON
+			m2 := &StaffPage{}
+
+			// Parsing/Unmarshalling JSON encoding/json
+			if err = json.Unmarshal(content, &m2); err != nil {
+				log.Fatalln(err)
+				// panic(err)
+			}
+
+			fmt.Println(m2.LeaveBalance)
+			ii, err := strconv.Atoi(NumBal)
+			m2.LeaveBalance = ii
+
+			fmt.Println(NumBal, m2.LeaveBalance)
+
+			b, err = json.Marshal(m2)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			if err = ioutil.WriteFile(db2, b, 0644); err != nil {
+				log.Fatalln(err)
+			}
 		}
 
-		// Creating the maps for JSON
-		m2 := map[string]interface{}{}
-
-		// Parsing/Unmarshalling JSON encoding/json
-		if err = json.Unmarshal(content, &m2); err != nil {
-			log.Fatalln(err)
-			// panic(err)
-		}
-
-		// fmt.Println(m)
-		ii, err := strconv.Atoi(NumBal)
-		m2["LeaveBalance"] = ii
-
-		// fmt.Println(m)
-
-		b, err = json.Marshal(m2)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		if err = ioutil.WriteFile(db2, b, 0644); err != nil {
-			log.Fatalln(err)
-		}
 	}
 
 	files, err := ioutil.ReadDir("./database/leave")

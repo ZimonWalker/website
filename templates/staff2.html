@@ -58,7 +58,8 @@
             <tr>
               <td>End Date</td>
               <td>:</td>
-              <td><input Leave="{{.LeaveBalance}}" id="end" type="date" name="end_date" onchange="myFunction(this.value)" min="set_date" required /></td>
+              <td><input Leave="{{.LeaveBalance}}" id="end" type="date" name="end_date" onchange="myFunction(this.value)"
+                  min="set_date" required /></td>
             </tr>
             <tr>
               <td>No of day</td>
@@ -110,10 +111,12 @@
 
       if (tot < 0) {
         alert("You dont have enough balance")
+      } else {
+        $("#days").val(t)
+        $("#numDays").val(t)
       }
-      
-      $("#days").val(t)
-      $("#numDays").val(t)
+
+
     }
   </script>
   <script>
