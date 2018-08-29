@@ -48,7 +48,6 @@
                         <th>Phone</th>
                         <th>Email</th>
                         <th>Leave Balance</th>
-                        <th>Action</th>
                     </tr>
 
                     {{with .StaffPage}} {{range .}}
@@ -59,7 +58,6 @@
                         <th>{{.Phone}}</th>
                         <th>{{.Email}}</th>
                         <th>{{.LeaveBalance}}</th>
-                        <th><a><button username="{{.Username}}" value="{{.LeaveBalance}}" class="myModalBtn">Update</button></a></th>
                     </tr>
                     {{end}} {{end}}
 
